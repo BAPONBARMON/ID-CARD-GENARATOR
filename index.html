@@ -106,8 +106,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script>
-    // 🔁 Replace the username/repo with yours
-    const logoDataURL = "https://yourusername.github.io/id-card-generator/logo.png";
+    const logoDataURL = "https://baponbarmon.github.io/id-card-generator/logo.png";
 
     function generateID() {
       const name = document.getElementById("nameInput").value;
@@ -119,7 +118,9 @@
 
       document.getElementById("idCardArea").innerHTML = `
         <div class="id-card" id="idCardFront">
-          <div class="logo"><img src="${logoDataURL}" alt="Logo" /></div>
+          <div class="logo">
+            <img src="${logoDataURL}" alt="Logo" />
+          </div>
           <div class="push-to-bottom">
             <div class="section"><strong>Name:&nbsp;&nbsp;</strong><strong>${name}</strong></div>
             <div class="section"><strong>Age:</strong> <strong>${age}</strong></div>
