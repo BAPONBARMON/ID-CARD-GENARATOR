@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ID Card Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    input {
+      padding: 6px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background: navy;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .form-section {
+      max-width: 400px;
+      margin-bottom: 30px;
+    }
+    .id-card-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .id-card {
+      width: 340px;
+      height: 500px;
+      background: white;
+      border: 3px solid navy;
+      padding: 20px;
+      box-sizing: border-box;
+      border-radius: 8px;
+    }
+    .section {
+      margin-top: 10px;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .section strong {
+      display: inline-block;
+      width: 120px;
+    }
+    .pledge-title {
+      color: red;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .small-text {
+      font-size: 13px;
+    }
+    .footer {
+      margin-top: 30px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Dalmia Bharat Cement - ID Card Generator</h2>
+
+  <div class="form-section">
+    <label>Name:</label><input id="nameInput" type="text" />
+    <label>Age:</label><input id="ageInput" type="text" />
+    <label>Blood Group:</label><input id="bloodInput" type="text" />
+    <label>Contractor:</label><input id="contractorInput" type="text" value="M/S" />
+    <label>Personal Contact No.:</label><input id="personalContact" type="text" />
+    <label>Emergency Contact No.:</label><input id="emergencyContact" type="text" />
+    <button onclick="generateID()">Preview ID Card</button>
+    <button onclick="downloadCard()">Download as Image</button>
+  </div>
+
+  <div class="id-card-container" id="idCardArea">
+    <!-- ID card will be rendered here -->
+  </div>
+
+  <!-- html2canvas script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    function generateID() {
+      const name = document.getElementById("nameInput").value;
+      const age = document.getElementById("ageInput").value;
+      const blood = document.getElementById("bloodInput").value;
+      const contractor = document.getElementById("contractorInput").value;
+      const personal = document.getElementById("personalContact").value;
+      const emergency = document.getElementById("emergencyContact").value;
+
+      document.getElementById("idCardArea").innerHTML = `
+        <div class="id-card" id="idCardFront">
+          <div class="section"><strong>Name:</strong> ${name}</div>
+          <div class="section"><strong>Age:</strong> ${age}</div>
+          <div class="section"><strong>Blood Group:</strong> ${blood}</div>
+          <div class="section"><strong>Contractor:</strong> ${contractor}</div>
+          <div class="section" style="margin-top: 20px;">
+            Dalmia Cement N.E Limited<br>
+            At: Bamungaon, 2 No Pipal Pukhuri<br>
+            Lanka, Hojai (Assam)<br>
+            Pin: 782446
+          </div>
+        </div>
+
+        <div class="id-card" id="idCardBack">
+          <div class="pledge-title">SAFETY PLEDGE</div>
+          <div class="small-text">
+            I fully realise that accidents are drain on the nation. Therefore I commit that I will not only take reasonable care for myself but also shall prevent others abusing safety norms under all circumstances in the best interest of me, my family, my fellow workers, employer and the society.
+          </div>
+          <br>
+          <div class="small-text">
+            মই সম্পূর্ণৰূপে উপলব্ধি কৰিছো যে দুৰ্ঘটনা ৰাষ্ট্ৰীয় অৰ্থনীতিৰ এটা হানি ৷
+            আমি ইয়াৰ বাবে নিজৰ সতৰ্কতা খটাম, আৰু আনকো সতর্ক কৰিম, কাৰণৰ প্রতি, 
+            সুৰক্ষাৰ নিয়ম-নীতি, যিকোনো পৰিস্থিতিত সাৱধানতা গৃহীত হ’ব লাগে,
+            দায়িত্ব, সংস্হা, আৰু সমাজৰ বাবে যাতে দুৰ্ঘটনা
+            প্ৰতিহত কৰাৰ বাবে সদা সচেতন হৈ থাকিম।
+          </div>
+          <div class="footer">
+            Personal Contact No.: ${personal}<br>
+            Emergency Contact No.: ${emergency}
+          </div>
+        </div>
+      `;
+    }
+
+    function downloadCard() {
+      const cardArea = document.getElementById("idCardArea");
+      html2canvas(cardArea).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'ID_Card.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+
+</body>
+</html>
