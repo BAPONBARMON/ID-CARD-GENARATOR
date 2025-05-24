@@ -36,21 +36,25 @@
     }
     .id-card {
       width: 340px;
-      height: 500px;
+      height: 400px;
       background: white;
       border: 3px solid navy;
       padding: 20px;
       box-sizing: border-box;
       border-radius: 8px;
+      position: relative;
     }
     .section {
       margin-top: 10px;
       line-height: 1.6;
       font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .section strong {
       display: inline-block;
-      width: 120px;
+      width: auto;
     }
     .pledge-title {
       color: red;
@@ -66,6 +70,19 @@
       margin-top: 30px;
       font-weight: bold;
     }
+    .push-to-bottom {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .logo img {
+      max-height: 72px;
+    }
   </style>
 </head>
 <body>
@@ -79,18 +96,19 @@
     <label>Contractor:</label><input id="contractorInput" type="text" value="M/S" />
     <label>Personal Contact No.:</label><input id="personalContact" type="text" />
     <label>Emergency Contact No.:</label><input id="emergencyContact" type="text" />
+    
     <button onclick="generateID()">Preview ID Card</button>
     <button onclick="downloadCard()">Download as Image</button>
   </div>
 
-  <div class="id-card-container" id="idCardArea">
-    <!-- ID card will be rendered here -->
-  </div>
+  <div class="id-card-container" id="idCardArea"></div>
 
-  <!-- html2canvas script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script>
+    // 🔁 Replace the username/repo with yours
+    const logoDataURL = "https://yourusername.github.io/id-card-generator/logo.png";
+
     function generateID() {
       const name = document.getElementById("nameInput").value;
       const age = document.getElementById("ageInput").value;
@@ -101,15 +119,18 @@
 
       document.getElementById("idCardArea").innerHTML = `
         <div class="id-card" id="idCardFront">
-          <div class="section"><strong>Name:</strong> ${name}</div>
-          <div class="section"><strong>Age:</strong> ${age}</div>
-          <div class="section"><strong>Blood Group:</strong> ${blood}</div>
-          <div class="section"><strong>Contractor:</strong> ${contractor}</div>
-          <div class="section" style="margin-top: 20px;">
-            Dalmia Cement N.E Limited<br>
-            At: Bamungaon, 2 No Pipal Pukhuri<br>
-            Lanka, Hojai (Assam)<br>
-            Pin: 782446
+          <div class="logo"><img src="${logoDataURL}" alt="Logo" /></div>
+          <div class="push-to-bottom">
+            <div class="section"><strong>Name:&nbsp;&nbsp;</strong><strong>${name}</strong></div>
+            <div class="section"><strong>Age:</strong> <strong>${age}</strong></div>
+            <div class="section"><strong>Blood Group:</strong> <strong>${blood}</strong></div>
+            <div class="section"><strong>Contractor:</strong> <strong>${contractor}</strong></div>
+            <div class="section" style="margin-top: 20px;">
+              Dalmia Cement N.E Limited<br>
+              At: Bamungaon, 2 No Pipal Pukhuri<br>
+              Lanka, Hojai (Assam)<br>
+              Pin: 782446
+            </div>
           </div>
         </div>
 
@@ -127,8 +148,8 @@
             প্ৰতিহত কৰাৰ বাবে সদা সচেতন হৈ থাকিম।
           </div>
           <div class="footer">
-            Personal Contact No.: ${personal}<br>
-            Emergency Contact No.: ${emergency}
+            Personal Contact No.: <strong>${personal}</strong><br>
+            Emergency Contact No.: <strong>${emergency}</strong>
           </div>
         </div>
       `;
