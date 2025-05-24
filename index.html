@@ -43,6 +43,7 @@
       box-sizing: border-box;
       border-radius: 8px;
       position: relative;
+      overflow: hidden;
     }
     .section {
       margin-top: 10px;
@@ -83,6 +84,15 @@
     .logo img {
       max-height: 72px;
     }
+    .photo-preview {
+      width: 70px;
+      height: 90px;
+      object-fit: cover;
+      border: 1px solid #000;
+      position: absolute;
+      top: 110px;
+      right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -92,11 +102,12 @@
   <div class="form-section">
     <label>Name:</label><input id="nameInput" type="text" />
     <label>Age:</label><input id="ageInput" type="text" />
+    <label>Upload Photo (Passport Size):</label><input id="photoInput" type="file" accept="image/*" />
     <label>Blood Group:</label><input id="bloodInput" type="text" />
     <label>Contractor:</label><input id="contractorInput" type="text" value="M/S" />
     <label>Personal Contact No.:</label><input id="personalContact" type="text" />
     <label>Emergency Contact No.:</label><input id="emergencyContact" type="text" />
-    
+
     <button onclick="generateID()">Preview ID Card</button>
     <button onclick="downloadCard()">Download as Image</button>
   </div>
@@ -116,44 +127,59 @@
       const personal = document.getElementById("personalContact").value;
       const emergency = document.getElementById("emergencyContact").value;
 
-      document.getElementById("idCardArea").innerHTML = `
-        <div class="id-card" id="idCardFront">
-          <div class="logo">
-            <img src="${logoDataURL}" alt="Logo" />
-          </div>
-          <div class="push-to-bottom">
-            <div class="section"><strong>Name:&nbsp;&nbsp;</strong><strong>${name}</strong></div>
-            <div class="section"><strong>Age:</strong> <strong>${age}</strong></div>
-            <div class="section"><strong>Blood Group:</strong> <strong>${blood}</strong></div>
-            <div class="section"><strong>Contractor:</strong> <strong>${contractor}</strong></div>
-            <div class="section" style="margin-top: 20px;">
-              Dalmia Cement N.E Limited<br>
-              At: Bamungaon, 2 No Pipal Pukhuri<br>
-              Lanka, Hojai (Assam)<br>
-              Pin: 782446
+      const photoFile = document.getElementById("photoInput").files[0];
+
+      if (!photoFile) {
+        alert("Please upload a passport-size photo.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const photoURL = event.target.result;
+
+        document.getElementById("idCardArea").innerHTML = `
+          <div class="id-card" id="idCardFront">
+            <div class="logo">
+              <img src="${logoDataURL}" alt="Logo" />
+            </div>
+            <img src="${photoURL}" alt="Photo" class="photo-preview"/>
+            <div class="push-to-bottom">
+              <div class="section"><strong>Name:</strong> <strong>${name}</strong></div>
+              <div class="section"><strong>Age:</strong> <strong>${age}</strong></div>
+              <div class="section"><strong>Blood Group:</strong> <strong>${blood}</strong></div>
+              <div class="section"><strong>Contractor:</strong> <strong>${contractor}</strong></div>
+              <div class="section" style="margin-top: 20px;">
+                Dalmia Cement N.E Limited<br>
+                At: Bamungaon, 2 No Pipal Pukhuri<br>
+                Lanka, Hojai (Assam)<br>
+                Pin: 782446
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="id-card" id="idCardBack">
-          <div class="pledge-title">SAFETY PLEDGE</div>
-          <div class="small-text">
-            I fully realise that accidents are drain on the nation. Therefore I commit that I will not only take reasonable care for myself but also shall prevent others abusing safety norms under all circumstances in the best interest of me, my family, my fellow workers, employer and the society.
+          <div class="id-card" id="idCardBack">
+            <div class="pledge-title">SAFETY PLEDGE</div>
+            <div class="small-text">
+              I fully realise that accidents are drain on the nation. Therefore I commit that I will not only take reasonable care for myself but also shall prevent others abusing safety norms under all circumstances in the best interest of me, my family, my fellow workers, employer and the society.
+            </div>
+            <br>
+            <div class="small-text">
+              मैं पूरी तरह से समझता हूँ कि दुर्घटनाएँ राष्ट्र की अर्थव्यवस्था पर बोझ हैं। 
+              इसलिए मैं न केवल स्वयं की सुरक्षा के लिए सतर्क रहूँगा, बल्कि दूसरों को भी 
+              सुरक्षा नियमों के पालन के लिए प्रेरित करूँगा, ताकि किसी भी परिस्थिति में 
+              दुर्घटनाओं को रोका जा सके — अपने, अपने परिवार, सहकर्मियों, नियोक्ता 
+              और समाज के हित में।
+            </div>
+            <div class="footer">
+              Personal Contact No.: <strong>${personal}</strong><br>
+              Emergency Contact No.: <strong>${emergency}</strong>
+            </div>
           </div>
-          <br>
-          <div class="small-text">
-            মই সম্পূর্ণৰূপে উপলব্ধি কৰিছো যে দুৰ্ঘটনা ৰাষ্ট্ৰীয় অৰ্থনীতিৰ এটা হানি ৷
-            আমি ইয়াৰ বাবে নিজৰ সতৰ্কতা খটাম, আৰু আনকো সতর্ক কৰিম, কাৰণৰ প্রতি, 
-            সুৰক্ষাৰ নিয়ম-নীতি, যিকোনো পৰিস্থিতিত সাৱধানতা গৃহীত হ’ব লাগে,
-            দায়িত্ব, সংস্হা, আৰু সমাজৰ বাবে যাতে দুৰ্ঘটনা
-            প্ৰতিহত কৰাৰ বাবে সদা সচেতন হৈ থাকিম।
-          </div>
-          <div class="footer">
-            Personal Contact No.: <strong>${personal}</strong><br>
-            Emergency Contact No.: <strong>${emergency}</strong>
-          </div>
-        </div>
-      `;
+        `;
+      };
+
+      reader.readAsDataURL(photoFile);
     }
 
     function downloadCard() {
